@@ -26,7 +26,7 @@ class MainView extends StatelessWidget {
 
         /// 화면 연산자 버튼에 테두리 이벤트
         if (str.isOperator) context.read<MainViewProvider>().clickBtnChangeBorder(btnKey);
-        if (str.isResult) context.read<MainViewProvider>().clickBtnChangeBorder(const ValueKey(0));
+        if (str.isReturn) context.read<MainViewProvider>().clickBtnChangeBorder(const ValueKey(0));
       }, //키보드 입력 종료
       onTapUp: (_) {
         /// 화면 숫자판 색상에 이벤트
