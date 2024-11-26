@@ -6,8 +6,8 @@ class MainViewProvider with ChangeNotifier {
   Key eventKey = const ValueKey(0);
   Key ooKey = const ValueKey(0);
   String screenStr = '0'; // 화면용
-  String a = ''; // 계산식 A
-  String b = ''; // 계산식 B
+  String numA = ''; // 계산식 A
+  String numB = ''; // 계산식 B
   String result = ''; //합
   String o = ''; // 연산자
 
@@ -17,50 +17,47 @@ class MainViewProvider with ChangeNotifier {
       print(str);
       if (o.isEmpty) {
         print('6.');
-        a += str; // A에 값 저장
-        screenStr = double.parse(a).toString().replaceAll(MyRegExp.delZeros, ''); // A에 저장된 값 화면에 노출
+        numA += str; // A에 값 저장
+        screenStr = numA.replaceAll(MyRegExp.pointLeftDelZeros, '');
+        // double.parse(a).toString();
+        //.replaceAll(MyRegExp.delZeros, ''); // A에 저장된 값 화면에 노출
       } else if (o.isNotEmpty) {
         print('7.');
-        b += str; // B에 값 저장
-        screenStr = double.parse(b).toString().replaceAll(MyRegExp.delZeros, ''); // B에 저장된 값 화면에 노출
+        numB += str; // B에 값 저장
+        screenStr = numB.replaceAll(MyRegExp.pointLeftDelZeros, '');
+        // double.parse(b).toString().replaceAll(MyRegExp.delZeros, ''); // B에 저장된 값 화면에 노출
       }
     } else {
-      print(str);
       if (str.isReturn) {
         print('1.');
-        if (a.isNotEmpty && b.isNotEmpty) {
+        if (numA.isNotEmpty && numB.isNotEmpty) {
           print('2.');
-          calculation(o, double.parse(a), double.parse(b));
+          calculation(o, double.parse(numA), double.parse(numB));
           if (str.isReturn) ooKey = const ValueKey(0);
-        } else if (a.isNotEmpty && b.isEmpty) {
+        } else if (numA.isNotEmpty && numB.isEmpty) {
           print('3.');
-          calculation(o, double.parse(a), double.parse(a), true);
+          calculation(o, double.parse(numA), double.parse(numA), true);
           if (str.isReturn) ooKey = const ValueKey(0);
-        } else {
-          print('----');
-          print(o);
-          print(a);
-          print(b);
         }
       } else if (str.isOperator) {
         print('4.');
 
-        if (a.isNotEmpty && b.isNotEmpty) {
+        if (numA.isNotEmpty && numB.isNotEmpty) {
           print('5.');
-          calculation(o, double.parse(a), double.parse(b));
+          calculation(o, double.parse(numA), double.parse(numB));
         }
         print('aaaaa $o');
         o = str; // 연산자 저장
       } else {
         if (o.isEmpty) {
           screenStr = decorateStr(str, screenStr);
-          a = screenStr;
-          print(a);
+          numA = screenStr;
+          print(numA);
           // a값
         } else {
           screenStr = decorateStr(str, screenStr);
-          b = screenStr;
-          print(b);
+          numB = screenStr;
+          print(numB);
         }
       }
     }
@@ -70,29 +67,30 @@ class MainViewProvider with ChangeNotifier {
 
   String decorateStr(String deco, String num) {
     String decoStr = '0'; // return
+    print(num);
 
     switch (deco) {
       case 'AC':
         cleanBtn();
         break;
       case '⁺⧸₋':
-        decoStr = (double.parse(num) * -1).toString().replaceAll(MyRegExp.delZeros, '');
+        decoStr = (double.parse(num) * -1).toString().replaceAll(MyRegExp.pointRightDelZero, '');
         break;
       case '%':
         print(789 * 0.01);
-        decoStr = (double.parse(num) * 0.01).toString().replaceAll(MyRegExp.delZeros, '');
+        decoStr = (double.parse(num) * 0.01).toString().replaceAll(MyRegExp.pointRightDelZero, '');
         print(decoStr);
         break;
       case '.':
-        decoStr = num + '.'.replaceAll(MyRegExp.delZeros, '');
+        //noMorePoint
+        //RegExp(r'(?<=\.\d*)\.', ''
+        decoStr = (num + '.').replaceAll(MyRegExp.noMorePoint, '');
         break;
     }
     print(decoStr);
     return decoStr;
   }
 
-//basics
-  //default
   void clickBtnChangeColor(Key key) {
     // 클릭한 key의 값을 가지고 있음
     eventKey = key;
@@ -107,8 +105,8 @@ class MainViewProvider with ChangeNotifier {
 
   void cleanBtn() {
     screenStr = '0';
-    a = '';
-    b = '';
+    numA = '';
+    numB = '';
     o = '';
     ooKey = const ValueKey(0);
     notifyListeners();
@@ -118,30 +116,25 @@ class MainViewProvider with ChangeNotifier {
     print(' $a $operator $b ');
     switch (operator) {
       case '+':
-        screenStr = same ? (double.parse(screenStr) + a).toString().replaceAll(MyRegExp.delZeros, '') : (a + b).toString().replaceAll(MyRegExp.delZeros, '');
-        this.a = same ? a.toString() : screenStr; // 계산된 값 A에 저장
-        this.b = ''; // B 값 초기화
+        screenStr = same ? (double.parse(screenStr) + a).toString().replaceAll(MyRegExp.pointRightDelZero, '') : (a + b).toString().replaceAll(MyRegExp.pointRightDelZero, '');
+        numA = same ? a.toString() : screenStr; // 계산된 값 A에 저장
+        numB = ''; // B 값 초기화
         break;
       case '−':
-        screenStr = same ? (double.parse(screenStr) - a).toString().replaceAll(MyRegExp.delZeros, '') : (a - b).toString().replaceAll(MyRegExp.delZeros, '');
-        this.a = same ? a.toString() : screenStr; // 계산된 값 A에 저장
-        this.b = ''; // B 값 초기화
+        screenStr = same ? (double.parse(screenStr) - a).toString().replaceAll(MyRegExp.pointRightDelZero, '') : (a - b).toString().replaceAll(MyRegExp.pointRightDelZero, '');
+        numA = same ? a.toString() : screenStr; // 계산된 값 A에 저장
+        numB = ''; // B 값 초기화
         break;
       case '×':
-        screenStr = same ? (double.parse(screenStr) * a).toString().replaceAll(MyRegExp.delZeros, '') : (a * b).toString().replaceAll(MyRegExp.delZeros, '');
-        this.a = same ? a.toString() : screenStr; // 계산된 값 A에 저장
-        this.b = ''; // B 값 초기화
+        screenStr = same ? (double.parse(screenStr) * a).toString().replaceAll(MyRegExp.pointRightDelZero, '') : (a * b).toString().replaceAll(MyRegExp.pointRightDelZero, '');
+        numA = same ? a.toString() : screenStr; // 계산된 값 A에 저장
+        numB = ''; // B 값 초기화
         break;
       case '÷':
-        screenStr = same ? (double.parse(screenStr) / a).toString().replaceAll(MyRegExp.delZeros, '') : (a / b).toString().replaceAll(MyRegExp.delZeros, '');
-        this.a = same ? a.toString() : screenStr; // 계산된 값 A에 저장
-        this.b = ''; // B 값 초기화
+        screenStr = same ? (double.parse(screenStr) / a).toString().replaceAll(MyRegExp.pointRightDelZero, '') : (a / b).toString().replaceAll(MyRegExp.pointRightDelZero, '');
+        numA = same ? a.toString() : screenStr; // 계산된 값 A에 저장
+        numB = ''; // B 값 초기화
         break;
-      // case '=':
-      //   screenStr = same ? (double.parse(screenStr) + a).toString().replaceAll(MyRegExp.delZeros, '') : (a + b).toString().replaceAll(MyRegExp.delZeros, '');
-      //   this.a = same ? a.toString() : screenStr; // 계산된 값 A에 저장
-      //   this.b = ''; // B 값 초기화
-      //   break;
     }
     notifyListeners();
   }
