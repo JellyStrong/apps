@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:siiimple/util/regExp.dart';
 
@@ -12,9 +13,8 @@ class MainViewProvider with ChangeNotifier {
   String o = ''; // 연산자
 
   void clickButton(String str) {
-    print(str + '아무거나');
+    HapticFeedback.vibrate();
     if (str.isNumber) {
-      print(str);
       if (o.isEmpty) {
         print('6.');
         numA += str; // A에 값 저장
@@ -25,7 +25,6 @@ class MainViewProvider with ChangeNotifier {
         print('7.');
         numB += str; // B에 값 저장
         screenStr = numB.replaceAll(MyRegExp.pointLeftDelZeros, '');
-        // double.parse(b).toString().replaceAll(MyRegExp.delZeros, ''); // B에 저장된 값 화면에 노출
       }
     } else {
       if (str.isReturn) {
