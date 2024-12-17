@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:siiimple/util/regExp.dart';
 
-class MainViewProvider with ChangeNotifier {
+class CalculatorViewProvider with ChangeNotifier {
   Key eventKey = const ValueKey(0);
   Key ooKey = const ValueKey(0);
   String screenStr = '0'; // 화면용
@@ -12,6 +12,14 @@ class MainViewProvider with ChangeNotifier {
   String result = ''; //합
   String o = ''; // 연산자
 
+  void initialization() {
+    screenStr = '0';
+    numA = '';
+    numB = '';
+    o = '';
+    ooKey = const ValueKey(0);
+  }
+
   void clickButton(String str) {
     HapticFeedback.vibrate();
     if (str.isNumber) {
@@ -19,8 +27,6 @@ class MainViewProvider with ChangeNotifier {
         print('6.');
         numA += str; // A에 값 저장
         screenStr = numA.replaceAll(MyRegExp.pointLeftDelZeros, '');
-        // double.parse(a).toString();
-        //.replaceAll(MyRegExp.delZeros, ''); // A에 저장된 값 화면에 노출
       } else if (o.isNotEmpty) {
         print('7.');
         numB += str; // B에 값 저장
@@ -76,7 +82,6 @@ class MainViewProvider with ChangeNotifier {
         decoStr = (double.parse(num) * -1).toString().replaceAll(MyRegExp.pointRightDelZero, '');
         break;
       case '%':
-        print(789 * 0.01);
         decoStr = (double.parse(num) * 0.01).toString().replaceAll(MyRegExp.pointRightDelZero, '');
         print(decoStr);
         break;
@@ -103,11 +108,7 @@ class MainViewProvider with ChangeNotifier {
   }
 
   void cleanBtn() {
-    screenStr = '0';
-    numA = '';
-    numB = '';
-    o = '';
-    ooKey = const ValueKey(0);
+    initialization();
     notifyListeners();
   }
 
