@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:siiimple/util/commonWidget.dart';
-import 'package:siiimple/util/route.dart';
-import 'package:siiimple/view/calculatorView.dart';
-import 'view/calculatorView.dart';
-import 'package:siiimple/util/route.dart';
 import 'provider/calculatorViewProvider.dart';
 import 'util/common.dart';
 import 'view/macWallPaperView.dart';

@@ -1,26 +1,72 @@
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
+
+import '../model/model.dart';
 
 const int closeKey = 100;
 const int minimizeKey = 101;
 const int maximizeKey = 102;
 
-/// DEVICE INFO
+/* DEVICE INFO
+ * getHeight()
+ * getWidth()
+ * getSize()
+ *
+ */
 class DeviceInfo {
+  /// 화면 세로값 가져 오기
   double getHeight(BuildContext context) {
     return MediaQuery.of(context).size.height;
   }
 
+  /// 화면 가로값 가져 오기
   double getWidth(BuildContext context) {
     return MediaQuery.of(context).size.width;
   }
 
+  /// 화면 가로값 세로값 가져 오기
   Size getSize(BuildContext context) {
     return MediaQuery.of(context).size;
   }
+
+  /// 플랫폼 상태 데이터
+  Future<void> initPlatformState() async {
+    final deviceInfoPlugin = DeviceInfoPlugin();
+    final deviceInfo = await deviceInfoPlugin.deviceInfo;
+    Model().setDeviceData = deviceInfo.data;
+    // deviceData = deviceInfo.data;
+    print('ddd1: ${Model().getDeviceData}');
+    print(readAndroidBuildData(deviceInfo));
+    Model().setDeviceData = readAndroidBuildData(deviceInfo);
+    print('ddd2: ${Model().getDeviceData}');
+  }
+
+  Map<String, dynamic> readAndroidBuildData(BaseDeviceInfo data) {
+    print('dddd4: ${Model().deviceData}');
+    Model().setDeviceData = data.data;
+    print('ddd3: ${Model().getDeviceData}');
+    return <String, dynamic>{
+      'model': data.data['model'],
+    };
+  }
+
+// Map<String, dynamic> info() {
+//   initPlatformState();
+//   print('deviceData: ${deviceData}');
+//   return deviceData;
+// }
 }
 
-/// WINDOW CONTROL (WC)
+/* WINDOW CONTROL (WC)
+ * initialization()
+ * getLayoutRandomOffset()
+ * getMenuOffset()
+ * btnHoverMenu
+ * btnHover
+ * btnClick
+ *
+ * */
 class WindowControls with ChangeNotifier {
   // 1. 윈더우 컨트롤 마우스 호버시 메뉴 아이콘 노출
   // 2. 윈도우 컨트롤 마우스 1.5초 호버시 메뉴 노툴
@@ -29,23 +75,24 @@ class WindowControls with ChangeNotifier {
   Key key = const ValueKey(0);
   bool hover = false;
 
-  //초기화
+  /// 초기화
   void initialization() {
     key = const ValueKey(0);
     hover = false;
   }
 
-  getLayoutRandomOffset(BuildContext context) {
+  /// 랜덤 좌표값 리턴
+  Offset getLayoutRandomOffset(BuildContext context, double left, double top) {
     Random random = Random();
     Offset randomOffset = Offset.zero; // 기본값으로 (0, 0)
-    double x = random.nextDouble() * DeviceInfo().getWidth(context);
-    double y = random.nextDouble() * DeviceInfo().getHeight(context);
+    double x = random.nextDouble() * (DeviceInfo().getWidth(context) - left);
+    double y = random.nextDouble() * (DeviceInfo().getHeight(context) - top);
     randomOffset = Offset(x, y);
     return randomOffset;
   }
 
-  // 좌표
-  getMenuOffset(BuildContext context) {
+  /// 메뉴 좌표값 리턴
+  Offset getMenuOffset(BuildContext context) {
     RenderBox renderBox;
     Offset position = const Offset(0, 0); //초기화
 
@@ -56,8 +103,8 @@ class WindowControls with ChangeNotifier {
     return position + const Offset(0, 5);
   }
 
-  // hover 1.5ms 후 menu
-  btnHoverMenu({
+  /// hover 1.5ms 후 menu 띄우기
+  void btnHoverMenu({
     required Key key,
     required BuildContext context,
     String? str,
@@ -77,8 +124,8 @@ class WindowControls with ChangeNotifier {
     notifyListeners();
   }
 
-  // hover
-  btnHover({
+  /// hover
+  void btnHover({
     required BuildContext context,
     required bool hover,
   }) {
@@ -86,8 +133,8 @@ class WindowControls with ChangeNotifier {
     notifyListeners();
   }
 
-  // click
-  btnClick({
+  /// click
+  void btnClick({
     required Key key,
     required BuildContext context,
     String? str,

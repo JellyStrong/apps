@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../model/model.dart';
 import 'common.dart';
 
+/* WINDOW CONTROL BUTTON (WCB)
+ * windowControlsBtn()
+ * buttons()
+ *
+ * */
 class WindowControlsBtn {
+  /// window control 버튼 이벤트 관련 (공통)
   Widget windowControlsBtn({
     required BuildContext context,
     required ValueKey valueKey,
@@ -14,7 +21,6 @@ class WindowControlsBtn {
   }) {
     return InkWell(
       onTap: () {
-        // 클릭 이벤트
         context.read<WindowControls>().btnClick(
               key: valueKey,
               context: context,
@@ -23,11 +29,9 @@ class WindowControlsBtn {
             );
       },
       onHover: (hover) {
-        print('22222');
         Future.delayed(
           const Duration(milliseconds: 1500),
           () {
-            //메뉴 띄우기
             if (context.mounted) {
               context.read<WindowControls>().btnHoverMenu(
                     key: valueKey,
@@ -70,6 +74,7 @@ class WindowControlsBtn {
     );
   }
 
+  /// window control 버튼 그리기 (빨,노,초) (공통)
   Widget buttons(OverlayEntry overlay) {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, left: 8.0),
@@ -81,7 +86,6 @@ class WindowControlsBtn {
             return InkWell(
               onTap: () {},
               onHover: (hover) {
-                print('1111111');
                 context.read<WindowControls>().btnHover(
                       context: context,
                       hover: hover,
@@ -103,8 +107,12 @@ class WindowControlsBtn {
   }
 }
 
+/* ICON WIDGET
+ * showApp
+ *
+ * */
 class IconWidget {
-  Widget iconWidget({
+  Widget showApp({
     required BuildContext context,
     required Widget child,
     required String iconPath,
@@ -122,8 +130,8 @@ class IconWidget {
             OverlayEntry? overlayEntry;
             overlayEntry = OverlayEntry(builder: (BuildContext context) {
               return Positioned(
-                top: (WindowControls().getLayoutRandomOffset(context)).dx,
-                left: (WindowControls().getLayoutRandomOffset(context)).dy,
+                top: (WindowControls().getLayoutRandomOffset(context, 233, 323)).dy,
+                left: (WindowControls().getLayoutRandomOffset(context, 233, 323)).dx,
                 child: Material(
                   child: Container(
                     constraints: BoxConstraints(maxWidth: maxWidth ??= double.infinity, maxHeight: maxHeight ??= double.infinity),
@@ -136,10 +144,10 @@ class IconWidget {
                         boxShadow: [
                           BoxShadow(
                             // color: Colors.black.withOpacity(0.5),
-                            color: Colors.black.withAlpha(5),
-                            blurRadius: 30.0,
+                            color: Colors.black.withAlpha(80),
+                            blurRadius: 20.0,
                             spreadRadius: 5.0,
-                            offset: const Offset(0, 12),
+                            offset: const Offset(0, 10),
                           ),
                         ],
                         color: backGround ??= Colors.white),
