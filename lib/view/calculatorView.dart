@@ -8,7 +8,6 @@ import 'package:siiimple/util/regExp.dart';
 
 import '../provider/calculatorViewProvider.dart';
 
-///컨텐츠class CalculatorView {
 Widget btnPad(Key btnKey, Color btnColor, String str, BuildContext context) {
   return GestureDetector(
 //키보드 입력
@@ -37,7 +36,7 @@ Widget btnPad(Key btnKey, Color btnColor, String str, BuildContext context) {
         return Container(
           key: btnKey,
           alignment: Alignment.center,
-//TODO: 추후 테마 적용..
+//TODO: 추후 테마 적용 (예정)
           decoration: BoxDecoration(
             border: btnKey == provider.ooKey ? Border.all(width: 1.5, color: Colors.blueGrey) : Border.all(width: 0.5, color: Colors.blue),
             color: btnKey == provider.eventKey ? const Color(0x99FFFFFF) : btnColor,

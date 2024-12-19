@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../model/model.dart';
-import 'common.dart';
+import 'util.dart';
 
 /* WINDOW CONTROL BUTTON (WCB)
  * windowControlsBtn()
@@ -14,7 +14,7 @@ class WindowControlsBtn {
     required BuildContext context,
     required ValueKey valueKey,
     required WindowControls provider,
-    required IconData icons,
+    required IconData icon,
     required Color color,
     required String str,
     required OverlayEntry overlay,
@@ -51,7 +51,7 @@ class WindowControlsBtn {
             child: Visibility(
               visible: provider.hover,
               child: Icon(
-                icons,
+                icon,
                 size: 12,
               ),
             ),
@@ -94,9 +94,9 @@ class WindowControlsBtn {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  windowControlsBtn(context: context, valueKey: const ValueKey(100), provider: provider, icons: Icons.close_rounded, color: Colors.red, str: 'close', overlay: overlay),
-                  windowControlsBtn(context: context, valueKey: const ValueKey(101), provider: provider, icons: Icons.remove_rounded, color: Colors.yellow, str: 'minimize', overlay: overlay),
-                  windowControlsBtn(context: context, valueKey: const ValueKey(102), provider: provider, icons: Icons.add_rounded, color: Colors.green, str: 'maximize', overlay: overlay),
+                  windowControlsBtn(context: context, valueKey: const ValueKey(100), provider: provider, icon: Icons.close_rounded, color: Colors.red, str: 'close', overlay: overlay),
+                  windowControlsBtn(context: context, valueKey: const ValueKey(101), provider: provider, icon: Icons.remove_rounded, color: Colors.yellow, str: 'minimize', overlay: overlay),
+                  windowControlsBtn(context: context, valueKey: const ValueKey(102), provider: provider, icon: Icons.add_rounded, color: Colors.green, str: 'maximize', overlay: overlay),
                 ],
               ),
             );
@@ -108,73 +108,87 @@ class WindowControlsBtn {
 }
 
 /* ICON WIDGET
- * showApp
+ * myApp
  *
  * */
 class IconWidget {
-  Widget showApp({
+  Widget myApp({
     required BuildContext context,
     required Widget child,
     required String iconPath,
     required String iconName,
     Color? backGround,
-    double? maxWidth,
-    double? maxHeight,
+    required double maxWidth,
+    required double maxHeight,
     List<Widget>? entry,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        InkWell(
-          onTap: () {
-            OverlayEntry? overlayEntry;
-            overlayEntry = OverlayEntry(builder: (BuildContext context) {
-              return Positioned(
-                top: (WindowControls().getLayoutRandomOffset(context, 233, 323)).dy,
-                left: (WindowControls().getLayoutRandomOffset(context, 233, 323)).dx,
-                child: Material(
-                  child: Container(
-                    constraints: BoxConstraints(maxWidth: maxWidth ??= double.infinity, maxHeight: maxHeight ??= double.infinity),
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: Colors.grey),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(13),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            // color: Colors.black.withOpacity(0.5),
-                            color: Colors.black.withAlpha(80),
-                            blurRadius: 20.0,
-                            spreadRadius: 5.0,
-                            offset: const Offset(0, 10),
+    return Container(
+      width: 100,
+      height: 115,
+      // margin: const EdgeInsets.all(5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          InkWell(
+            onTap: () {
+              OverlayEntry? overlayEntry;
+              overlayEntry = OverlayEntry(builder: (BuildContext context) {
+                return Positioned(
+                  left: (WindowControls().getLayoutRandomOffset(context, maxWidth, maxHeight)).dx,
+                  top: (WindowControls().getLayoutRandomOffset(context, maxWidth, maxHeight)).dy,
+                  child: Material(
+                    color: Colors.transparent, //뒷배경투명하게
+                    child: Container(
+                      /// 앱 틀
+                      constraints: BoxConstraints(maxWidth: maxWidth, maxHeight: maxHeight),
+                      decoration: BoxDecoration(
+                          border: Border.all(width: 1, color: Colors.grey),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(13),
                           ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withAlpha(100),
+                              blurRadius: 20.0,
+                              spreadRadius: 5.0,
+                              offset: const Offset(0, 10),
+                            ),
+                          ],
+                          color: backGround ??= Colors.white),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // 공통 윈도우 컨트롤
+                          WindowControlsBtn().buttons(overlayEntry!),
+                          // 컨텐츠
+                          child,
                         ],
-                        color: backGround ??= Colors.white),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // 공통 윈도우 컨트롤
-                        WindowControlsBtn().buttons(overlayEntry!),
-                        child,
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            });
-            Overlay.of(context).insert(overlayEntry);
-            // openWidget(context: context, maxWidth: 233, maxHeight: 333, child: child, backGround: Colors.blue);
-          },
-          child: Image.asset(
-            // 'assets/images/calculatorIcon.png',
-            iconPath,
-            width: 70,
-            height: 70,
+                );
+              });
+              Overlay.of(context).insert(overlayEntry);
+            },
+            child: Image.asset(
+              iconPath,
+              width: 70,
+              height: 70,
+            ),
           ),
-        ),
-        Text(iconName),
-      ],
+          Text(
+            iconName,
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.white, shadows: [
+              Shadow(
+                color: Colors.black.withAlpha(100),
+                blurRadius: 2.0,
+                offset: const Offset(0, 2),
+              )
+            ]),
+          ),
+        ],
+      ),
     );
   }
 }

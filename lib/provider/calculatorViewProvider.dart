@@ -85,9 +85,8 @@ class CalculatorViewProvider with ChangeNotifier {
         decoStr = (double.parse(num) * 0.01).toString().replaceAll(MyRegExp.pointRightDelZero, '');
         print(decoStr);
         break;
+        //TODO: 부동 소수점 정밀도 오류 / 근시값으로 보여주기때문 계산에 오차 발생
       case '.':
-        //noMorePoint
-        //RegExp(r'(?<=\.\d*)\.', ''
         decoStr = (num + '.').replaceAll(MyRegExp.noMorePoint, '');
         break;
     }
@@ -96,21 +95,21 @@ class CalculatorViewProvider with ChangeNotifier {
   }
 
   void clickBtnChangeColor(Key key) {
-    // 클릭한 key의 값을 가지고 있음
     eventKey = key;
     notifyListeners();
   }
 
   void clickBtnChangeBorder(Key key) {
-    // 클릭한 key의 값을 가지고 있음
     ooKey = key;
     notifyListeners();
   }
 
+  /// 결과값,입력값,기호 초기화
   void cleanBtn() {
     initialization();
     notifyListeners();
   }
+
 
   void calculation(String operator, double a, double b, [bool same = false]) {
     print(' $a $operator $b ');
@@ -121,7 +120,7 @@ class CalculatorViewProvider with ChangeNotifier {
         numB = ''; // B 값 초기화
         break;
       case '−':
-        screenStr = same ? (double.parse(screenStr) - a).toString().replaceAll(MyRegExp.pointRightDelZero, '') : (a - b).toString().replaceAll(MyRegExp.pointRightDelZero, '');
+        screenStr = same ? (double.parse(screenStr) - a).toString() : (a - b).toString().replaceAll(MyRegExp.pointRightDelZero, '');
         numA = same ? a.toString() : screenStr; // 계산된 값 A에 저장
         numB = ''; // B 값 초기화
         break;
