@@ -87,7 +87,6 @@ class WindowControls with ChangeNotifier {
     double x = random.nextDouble() * (DeviceInfo().getWidth(context) - left);
     double y = random.nextDouble() * (DeviceInfo().getHeight(context) - top - 40); // 40:상태창
     randomOffset = Offset(x, y + 40); // 40:상태창
-    print(randomOffset);
     return randomOffset;
   }
 
@@ -137,11 +136,18 @@ class WindowControls with ChangeNotifier {
     required Key key,
     required BuildContext context,
     String? str,
-    required OverlayEntry overlay,
+    required String iconName,
+    // required OverlayEntry overlay,
+    // required Map<String, dynamic>? overlayEntries,
   }) {
+    OverlayEntry? overlayEntry;
     switch (str) {
       case 'close':
-        overlay.remove(); // Overlay 제거
+        print(Model().getEntries);
+        overlayEntry = Model().getEntries[iconName];
+        overlayEntry!.remove();
+        Model().getEntries.remove(iconName);
+        // overlay.remove(); // Overlay 제거
         initialization(); // 초기화
         break;
       case 'minimize':

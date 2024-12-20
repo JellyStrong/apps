@@ -14,6 +14,8 @@ class WindowControlsBtn {
     required BuildContext context,
     required ValueKey valueKey,
     required WindowControls provider,
+    required String iconName,
+    Map<String, dynamic>? overlayEntry,
     required IconData icon,
     required Color color,
     required String str,
@@ -24,7 +26,9 @@ class WindowControlsBtn {
         context.read<WindowControls>().btnClick(
               key: valueKey,
               context: context,
-              overlay: overlay,
+              iconName: iconName,
+              // overlay: overlay,
+              // overlayEntries: overlayEntry,
               str: str,
             );
       },
@@ -75,7 +79,7 @@ class WindowControlsBtn {
   }
 
   /// window control 버튼 그리기 (빨,노,초) (공통)
-  Widget buttons(OverlayEntry overlay) {
+  Widget buttons(OverlayEntry overlay, String iconName) {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, left: 8.0),
       child: SizedBox(
@@ -94,9 +98,36 @@ class WindowControlsBtn {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  windowControlsBtn(context: context, valueKey: const ValueKey(100), provider: provider, icon: Icons.close_rounded, color: Colors.red, str: 'close', overlay: overlay),
-                  windowControlsBtn(context: context, valueKey: const ValueKey(101), provider: provider, icon: Icons.remove_rounded, color: Colors.yellow, str: 'minimize', overlay: overlay),
-                  windowControlsBtn(context: context, valueKey: const ValueKey(102), provider: provider, icon: Icons.add_rounded, color: Colors.green, str: 'maximize', overlay: overlay),
+                  windowControlsBtn(
+                      context: context,
+                      valueKey: const ValueKey(100),
+                      provider: provider,
+                      iconName: iconName,
+                      // overlayEntry: overlayEntry,
+                      icon: Icons.close_rounded,
+                      color: Colors.red,
+                      str: 'close',
+                      overlay: overlay),
+                  windowControlsBtn(
+                      context: context,
+                      valueKey: const ValueKey(101),
+                      provider: provider,
+                      iconName: iconName,
+                      // overlayEntry: overlayEntry,
+                      icon: Icons.remove_rounded,
+                      color: Colors.yellow,
+                      str: 'minimize',
+                      overlay: overlay),
+                  windowControlsBtn(
+                      context: context,
+                      valueKey: const ValueKey(102),
+                      provider: provider,
+                      iconName: iconName,
+                      // overlayEntry: overlayEntry,
+                      icon: Icons.add_rounded,
+                      color: Colors.green,
+                      str: 'maximize',
+                      overlay: overlay),
                 ],
               ),
             );
@@ -111,6 +142,9 @@ class WindowControlsBtn {
  * myApp
  *
  * */
+
+Model model = Model();
+
 class IconWidget {
   Widget myApp({
     required BuildContext context,
@@ -123,16 +157,15 @@ class IconWidget {
     List<Widget>? entry,
   }) {
     return Container(
-      width: 100,
-      height: 115,
-      // margin: const EdgeInsets.all(5),
+      margin: const EdgeInsets.all(12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           InkWell(
             onTap: () {
               OverlayEntry? overlayEntry;
+
               overlayEntry = OverlayEntry(builder: (BuildContext context) {
                 return Positioned(
                   left: (WindowControls().getLayoutRandomOffset(context, maxWidth, maxHeight)).dx,
@@ -160,7 +193,7 @@ class IconWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // 공통 윈도우 컨트롤
-                          WindowControlsBtn().buttons(overlayEntry!),
+                          WindowControlsBtn().buttons(overlayEntry!, iconName),
                           // 컨텐츠
                           child,
                         ],
@@ -169,14 +202,23 @@ class IconWidget {
                   ),
                 );
               });
-              Overlay.of(context).insert(overlayEntry);
+
+              if (!model.getEntries.containsKey(iconName)) {
+                // 새로운 값이 들어갈 때 setEntries 사용하여 업데이트
+                model.addEntry(iconName, overlayEntry);
+                Overlay.of(context).insert(overlayEntry);
+              }
             },
-            child: Image.asset(
-              iconPath,
+            child: SizedBox(
               width: 70,
               height: 70,
+              child: Image.asset(
+                iconPath,
+                fit: BoxFit.contain,
+              ),
             ),
           ),
+          const SizedBox(height: 5),
           Text(
             iconName,
             style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.white, shadows: [

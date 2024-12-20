@@ -9,22 +9,23 @@ class MacWallPaperView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DeviceInfo().initPlatformState();
+    // DeviceInfo().initPlatformState();
     return Material(
       child: Container(
         decoration: const BoxDecoration(
           color: Colors.black45,
           //TODO: 현재 시간에 따른 배경 이미지 변경 (예정)
           image: DecorationImage(
-            image: AssetImage('assets/image/bg/macOS-Big-Sur-Daylight-Wallpaper_02.jpeg'),
+            image: AssetImage('assets/image/bg/macOS-Big-Sur-Daylight-Wallpaper_01.jpeg'),
             fit: BoxFit.cover,
           ),
         ),
         child: SafeArea(
-          child: Column(
+          child: Stack(
             children: [
               Container(color: Colors.grey[700], width: DeviceInfo().getWidth(context), height: 40),
-              Expanded(
+              Positioned(
+                top: 40,
                 child: Row(
                   children: [
                     Column(
@@ -47,58 +48,88 @@ class MacWallPaperView extends StatelessWidget {
                           maxHeight: 500,
                           backGround: Colors.blue,
                         ),
+                        IconWidget().myApp(
+                          context: context,
+                          child: previewView(context),
+                          iconName: '사진 테스트',
+                          iconPath: 'assets/image/icon/test02.png',
+                          maxWidth: 500,
+                          maxHeight: 500,
+                          backGround: Colors.blue,
+                        ),
+                        IconWidget().myApp(
+                          context: context,
+                          child: previewView(context),
+                          iconName: '사진 테스트',
+                          iconPath: 'assets/image/icon/test01.jpg',
+                          maxWidth: 500,
+                          maxHeight: 500,
+                          backGround: Colors.blue,
+                        ),
+                        IconWidget().myApp(
+                          context: context,
+                          child: previewView(context),
+                          iconName: '사진 테스트',
+                          iconPath: 'assets/image/icon/test03.png',
+                          maxWidth: 500,
+                          maxHeight: 500,
+                          backGround: Colors.blue,
+                        ),
                       ],
                     ),
                   ],
                 ),
               ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  color: Colors.grey[300],
-                ),
-                padding: const EdgeInsets.all(9),
-                width: 250,
-                height: 70,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(13)),
-                        color: Colors.red,
+              Positioned(
+                bottom: 7,
+                left: (DeviceInfo().getWidth(context) * 0.5) - (250 * 0.5),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    color: Colors.grey[300],
+                  ),
+                  padding: const EdgeInsets.all(9),
+                  width: 250,
+                  height: 70,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(13)),
+                          color: Colors.red,
+                        ),
+                        width: 50,
+                        height: 50,
                       ),
-                      width: 50,
-                      height: 50,
-                    ),
-                    Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(13)),
-                        color: Colors.purple,
+                      Container(
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(13)),
+                          color: Colors.purple,
+                        ),
+                        width: 50,
+                        height: 50,
                       ),
-                      width: 50,
-                      height: 50,
-                    ),
-                    Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(13)),
-                        color: Colors.green,
+                      Container(
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(13)),
+                          color: Colors.green,
+                        ),
+                        width: 50,
+                        height: 50,
                       ),
-                      width: 50,
-                      height: 50,
-                    ),
-                    Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(13)),
-                        color: Colors.orange,
+                      Container(
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(13)),
+                          color: Colors.orange,
+                        ),
+                        width: 50,
+                        height: 50,
                       ),
-                      width: 50,
-                      height: 50,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(height: 7),
             ],
           ),
         ),

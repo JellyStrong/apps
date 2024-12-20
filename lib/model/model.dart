@@ -1,23 +1,32 @@
+import 'package:flutter/cupertino.dart';
+
 class Model {
-  double result = 0; //결과값
-  double num = 0; // 받는 숫자
-  String oo = ''; // 연산자
+  static final Model _instance = Model._internal();
+
+  // 외부에서 직접 인스턴스를 생성할 수 없도록 private 생성자 사용
+  Model._internal();
+
+  factory Model() {
+    return _instance;
+  }
 
   Map<String, dynamic> deviceData = <String, dynamic>{};
+  Map<String, OverlayEntry> entries = <String, OverlayEntry>{};
 
-
-
-  /// get ///
-  double get getNum => num;
-
-  double get getResult => result;
+  /// getter ///
 
   Map<String, dynamic> get getDeviceData => deviceData;
 
-  /// set ///
-  set setNum(double v) => num = v;
+  Map<String, OverlayEntry> get getEntries => entries;
 
-  set setResult(double v) => result = v;
+  /// setter ///
 
   set setDeviceData(Map<String, dynamic> v) => deviceData = v;
+
+  set setEntries(Map<String, OverlayEntry> v) => entries = v;
+
+  void addEntry(String key, OverlayEntry overlayEntry) {
+    setEntries = {...getEntries, key: overlayEntry};
+    print('overlayEntry : $entries');
+  }
 }
