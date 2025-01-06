@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
+import '../model/deviceInfo.dart';
 import '../model/model.dart';
+import '../util/util.dart';
 import 'util.dart';
 
 /* WINDOW CONTROL BUTTON (WCB)
@@ -8,6 +11,21 @@ import 'util.dart';
  * buttons()
  *
  * */
+Model model = Model();
+WindowControls wc = WindowControls();
+var box = Hive.openBox<DeviceInfoData>('deviceInfoBox');
+
+Future<Box<DeviceInfoData>> getDeviceInfo() async {
+  Box<DeviceInfoData> box = await Hive.openBox<DeviceInfoData>('deviceInfoBox');
+
+  print('???? ${box.get('model')}');
+  print('????? ${box.values.toList()}');
+   box.get('model');
+  return box;
+  // 데이터 저장
+  // await box.put('device1', DeviceInfoData(model: ));
+}
+
 class WindowControlsBtn {
   /// window control 버튼 이벤트 관련 (공통)
   Widget windowControlsBtn({
@@ -27,9 +45,8 @@ class WindowControlsBtn {
               key: valueKey,
               context: context,
               iconName: iconName,
-              // overlay: overlay,
-              // overlayEntries: overlayEntry,
               str: str,
+              model: model,
             );
       },
       onHover: (hover) {
@@ -80,6 +97,10 @@ class WindowControlsBtn {
 
   /// window control 버튼 그리기 (빨,노,초) (공통)
   Widget buttons(OverlayEntry overlay, String iconName) {
+    print('<>><<');
+    getDeviceInfo().then((result){
+      print('000000 ${result.get('model')}');
+    });
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, left: 8.0),
       child: SizedBox(
@@ -87,13 +108,16 @@ class WindowControlsBtn {
         width: 60,
         child: Consumer<WindowControls>(
           builder: (context, provider, child) {
+
             return InkWell(
               onTap: () {},
               onHover: (hover) {
-                context.read<WindowControls>().btnHover(
-                      context: context,
-                      hover: hover,
-                    );
+                //TODO: 현재 메뉴 띄우기 중단 24.12.28
+                // context.read<WindowControls>().btnHover(
+                //       context: context,
+                //       hover: hover,
+                //       model: model,
+                //     );
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -101,33 +125,32 @@ class WindowControlsBtn {
                   windowControlsBtn(
                       context: context,
                       valueKey: const ValueKey(100),
-                      provider: provider,
+                      provider:  provider,
                       iconName: iconName,
-                      // overlayEntry: overlayEntry,
                       icon: Icons.close_rounded,
                       color: Colors.red,
                       str: 'close',
                       overlay: overlay),
                   windowControlsBtn(
-                      context: context,
-                      valueKey: const ValueKey(101),
-                      provider: provider,
-                      iconName: iconName,
-                      // overlayEntry: overlayEntry,
-                      icon: Icons.remove_rounded,
-                      color: Colors.yellow,
-                      str: 'minimize',
-                      overlay: overlay),
+                    context: context,
+                    valueKey: const ValueKey(101),
+                    provider: provider,
+                    iconName: iconName,
+                    icon: Icons.remove_rounded,
+                    color: Colors.yellow,
+                    str: 'minimize',
+                    overlay: overlay,
+                  ),
                   windowControlsBtn(
-                      context: context,
-                      valueKey: const ValueKey(102),
-                      provider: provider,
-                      iconName: iconName,
-                      // overlayEntry: overlayEntry,
-                      icon: Icons.add_rounded,
-                      color: Colors.green,
-                      str: 'maximize',
-                      overlay: overlay),
+                    context: context,
+                    valueKey: const ValueKey(102),
+                    provider: provider,
+                    iconName: iconName,
+                    icon: Icons.add_rounded,
+                    color: Colors.green,
+                    str: 'maximize',
+                    overlay: overlay,
+                  ),
                 ],
               ),
             );
@@ -139,23 +162,83 @@ class WindowControlsBtn {
 }
 
 /* ICON WIDGET
+ * myImage
  * myApp
  *
  * */
-
-Model model = Model();
-
 class IconWidget {
-  Widget myApp({
+  Widget myImage({
     required BuildContext context,
     required Widget child,
     required String iconPath,
     required String iconName,
-    Color? backGround,
     required double maxWidth,
     required double maxHeight,
     List<Widget>? entry,
+    Color? backGround,
   }) {
+    // Future와 then을 사용하여 비동기 처리
+    ImagesGetInfo().getImageSize(iconPath).then((result) {
+      print('result: $result');
+    }).catchError((error) {
+      print("오류 발생: $error");
+    });
+    return Image.asset(iconPath);
+  }
+
+  void contentType(String type) {
+    switch (type) {
+      case 'app':
+        break;
+      case 'image':
+        break;
+    }
+  }
+
+  /// 브라우저(틀) 사이즈 리턴
+  bool sizez(BuildContext context, String path) {
+    double deviceWidth = DeviceInfo().getWidth(context);
+    double deviceHeight = DeviceInfo().getHeight(context);
+    bool sizeSHow = false;
+    Map<dynamic, dynamic> imageInfo = {};
+    // Future와 then을 사용하여 비동기 처리
+    ImagesGetInfo().getImageSize(path).then((result) {
+      print('result: $result');
+      imageInfo = result;
+    }).catchError((error) {
+      print("오류 발생: $error");
+    });
+
+    if (500 > imageInfo['imageWidth']) {
+      // 기본 500 200
+      sizeSHow = true;
+    }
+    if (200 > imageInfo['imageHeight']) {
+      sizeSHow = true;
+      // 가로가 길면
+    }
+    return sizeSHow;
+  }
+
+  Widget myPicture({
+    required BuildContext context,
+    required Widget child,
+    required String iconPath,
+    required String iconName,
+    required double maxWidth,
+    required double maxHeight,
+    // required String type,
+    List<Widget>? entry,
+    Color? backGround,
+  }) {
+    // Future와 then을 사용하여 비동기 처리
+    ImagesGetInfo().getImageSize(iconPath).then((result) {
+      print('result: $result');
+    }).catchError((error) {
+      print("오류 발생: $error");
+    });
+
+    print('iconPath:$iconPath, iconName:$iconName, maxWidth:$maxWidth, maxHeight:$maxHeight ');
     return Container(
       margin: const EdgeInsets.all(12),
       child: Column(
@@ -165,50 +248,54 @@ class IconWidget {
           InkWell(
             onTap: () {
               OverlayEntry? overlayEntry;
-
-              overlayEntry = OverlayEntry(builder: (BuildContext context) {
-                return Positioned(
-                  left: (WindowControls().getLayoutRandomOffset(context, maxWidth, maxHeight)).dx,
-                  top: (WindowControls().getLayoutRandomOffset(context, maxWidth, maxHeight)).dy,
-                  child: Material(
-                    color: Colors.transparent, //뒷배경투명하게
-                    child: Container(
-                      /// 앱 틀
-                      constraints: BoxConstraints(maxWidth: maxWidth, maxHeight: maxHeight),
-                      decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: Colors.grey),
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(13),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withAlpha(100),
-                              blurRadius: 20.0,
-                              spreadRadius: 5.0,
-                              offset: const Offset(0, 10),
+              if (!model.getEntries.containsKey(iconName)) {
+                Offset randomOffset = WindowControls().getLayoutRandomOffset(
+                  context,
+                  iconName,
+                  maxWidth,
+                  maxHeight,
+                );
+                overlayEntry = OverlayEntry(builder: (BuildContext context) {
+                  return Positioned(
+                    left: randomOffset.dx,
+                    top: randomOffset.dy,
+                    child: Material(
+                      color: Colors.transparent, //뒷배경투명하게
+                      child: Container(
+                        /// 앱 틀
+                        constraints: BoxConstraints(maxWidth: 500, maxHeight: 200),
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: Colors.grey),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(13),
                             ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withAlpha(100),
+                                blurRadius: 20.0,
+                                spreadRadius: 5.0,
+                                offset: const Offset(0, 10),
+                              ),
+                            ],
+                            color: backGround ??= Colors.white),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // 공통 윈도우 컨트롤
+                            WindowControlsBtn().buttons(overlayEntry!, iconName),
+                            // 컨텐츠
+                            child,
                           ],
-                          color: backGround ??= Colors.white),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // 공통 윈도우 컨트롤
-                          WindowControlsBtn().buttons(overlayEntry!, iconName),
-                          // 컨텐츠
-                          child,
-                        ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              });
-
-              if (!model.getEntries.containsKey(iconName)) {
-                // 새로운 값이 들어갈 때 setEntries 사용하여 업데이트
+                  );
+                });
                 model.addEntry(iconName, overlayEntry);
                 Overlay.of(context).insert(overlayEntry);
               }
             },
+            // 앱 아이콘 박스
             child: SizedBox(
               width: 70,
               height: 70,
@@ -219,6 +306,101 @@ class IconWidget {
             ),
           ),
           const SizedBox(height: 5),
+          // 앱 아이콘 제목
+          Text(
+            iconName,
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.white, shadows: [
+              Shadow(
+                color: Colors.black.withAlpha(100),
+                blurRadius: 2.0,
+                offset: const Offset(0, 2),
+              )
+            ]),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget myApp({
+    required BuildContext context,
+    required Widget child,
+    required String iconPath,
+    required String iconName,
+    required double maxWidth,
+    required double maxHeight,
+    List<Widget>? entry,
+    Color? backGround,
+  }) {
+    print('iconPath:$iconPath, iconName:$iconName, maxWidth:$maxWidth, maxHeight:$maxHeight ');
+    return Container(
+      margin: const EdgeInsets.all(12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          InkWell(
+            onTap: () {
+              OverlayEntry? overlayEntry;
+              if (!model.getEntries.containsKey(iconName)) {
+                Offset randomOffset = WindowControls().getLayoutRandomOffset(
+                  context,
+                  iconName,
+                  maxWidth,
+                  maxHeight,
+                );
+                overlayEntry = OverlayEntry(builder: (BuildContext context) {
+                  return Positioned(
+                    left: randomOffset.dx,
+                    top: randomOffset.dy,
+                    child: Material(
+                      color: Colors.transparent, //뒷배경투명하게
+                      child: Container(
+                        /// 앱 틀
+                        constraints: BoxConstraints(maxWidth: maxWidth, maxHeight: maxHeight),
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: Colors.grey),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(13),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withAlpha(100),
+                                blurRadius: 20.0,
+                                spreadRadius: 5.0,
+                                offset: const Offset(0, 10),
+                              ),
+                            ],
+                            color: backGround ??= Colors.white),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // 공통 윈도우 컨트롤
+                            WindowControlsBtn().buttons(overlayEntry!, iconName),
+                            // 컨텐츠
+                            child,
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                });
+                model.addEntry(iconName, overlayEntry);
+                Overlay.of(context).insert(overlayEntry);
+              }
+            },
+            // 앱 아이콘 박스
+            child: SizedBox(
+              width: 70,
+              height: 70,
+              child: Image.asset(
+                iconPath,
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+          const SizedBox(height: 5),
+          // 앱 아이콘 제목
           Text(
             iconName,
             style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.white, shadows: [

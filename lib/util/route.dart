@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:siiimple/view/calculatorView.dart';
 import 'package:siiimple/view/macWallPaperView.dart';
 
+/// 현재 사용 안함
+
 // final GoRouter MyRouter = GoRouter(
 //   routes: <RouteBase>[
 //     GoRoute(

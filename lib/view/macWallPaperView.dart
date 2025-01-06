@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
 import 'package:siiimple/util/util.dart';
 import 'package:siiimple/util/commonWidget.dart';
 import 'calculatorView.dart';
+import 'imageView.dart';
 import 'previewView.dart';
 
 class MacWallPaperView extends StatelessWidget {
@@ -9,7 +12,9 @@ class MacWallPaperView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // DeviceInfo().initPlatformState();
+
+
+
     return Material(
       child: Container(
         decoration: const BoxDecoration(
@@ -39,40 +44,13 @@ class MacWallPaperView extends StatelessWidget {
                           maxHeight: 323,
                           backGround: Colors.blue,
                         ),
-                        IconWidget().myApp(
+                        IconWidget().myPicture(
                           context: context,
-                          child: previewView(context),
-                          iconName: '미리보기',
-                          iconPath: 'assets/image/icon/preview.png',
-                          maxWidth: 500,
-                          maxHeight: 500,
-                          backGround: Colors.blue,
-                        ),
-                        IconWidget().myApp(
-                          context: context,
-                          child: previewView(context),
-                          iconName: '사진 테스트',
+                          child: imageView('assets/image/icon/test02.png'),
+                          iconName: '이미지 테스트',
                           iconPath: 'assets/image/icon/test02.png',
-                          maxWidth: 500,
-                          maxHeight: 500,
-                          backGround: Colors.blue,
-                        ),
-                        IconWidget().myApp(
-                          context: context,
-                          child: previewView(context),
-                          iconName: '사진 테스트',
-                          iconPath: 'assets/image/icon/test01.jpg',
-                          maxWidth: 500,
-                          maxHeight: 500,
-                          backGround: Colors.blue,
-                        ),
-                        IconWidget().myApp(
-                          context: context,
-                          child: previewView(context),
-                          iconName: '사진 테스트',
-                          iconPath: 'assets/image/icon/test03.png',
-                          maxWidth: 500,
-                          maxHeight: 500,
+                          maxWidth: 200,
+                          maxHeight: 200,
                           backGround: Colors.blue,
                         ),
                       ],
