@@ -38,7 +38,7 @@ Widget btnPad(Key btnKey, Color btnColor, String str, BuildContext context) {
           alignment: Alignment.center,
 //TODO: 추후 테마 적용 (예정)
           decoration: BoxDecoration(
-            border: btnKey == provider.ooKey ? Border.all(width: 1.5, color: Colors.blueGrey) : Border.all(width: 0.5, color: Colors.blue),
+            border: btnKey == provider.operatorKey ? Border.all(width: 1.5, color: Colors.blueGrey) : Border.all(width: 0.5, color: Colors.blue),
             color: btnKey == provider.eventKey ? const Color(0x99FFFFFF) : btnColor,
           ),
           child: Text(
