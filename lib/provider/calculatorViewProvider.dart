@@ -9,7 +9,7 @@ class CalculatorViewProvider with ChangeNotifier {
   String numA = ''; // 숫자A
   String numB = ''; // 숫자B
   String operator = ''; // 연산자
-  bool beforeReturn = false; // return한적이 있는지
+  bool beforeReturn = false; // 전의 기호가 등호(=) 였는지
 
   /// 초기화
   void initialization() {
@@ -64,16 +64,12 @@ class CalculatorViewProvider with ChangeNotifier {
         }
         if (beforeReturn) {
           numB = screenStr;
-          print(numB);
         }
-        print('aaaaa $operator');
         operator = str; // 연산자 저장
       } else {
         if (operator.isEmpty) {
           screenStr = decorateStr(str, screenStr);
           numA = screenStr;
-          print(numA);
-          // a값
         } else {
           screenStr = decorateStr(str, screenStr);
           numB = screenStr;
@@ -88,11 +84,9 @@ class CalculatorViewProvider with ChangeNotifier {
   /// 연산자 성형 및 AC
   String decorateStr(String deco, String num) {
     String decoStr = '0'; // return
-    print(num);
 
     switch (deco) {
       case 'AC':
-        print('>>>>> ${beforeReturn}');
         cleanBtn();
         break;
       case '⁺⧸₋':
@@ -134,9 +128,7 @@ class CalculatorViewProvider with ChangeNotifier {
     beforeReturn = saveNumB;
     switch (operator) {
       case '+':
-        print('계산전 : ${a + b}');
         screenStr = (a + b).toString().replaceAll(MyRegExp.pointRightDelZero, '');
-        print(screenStr);
         numA = screenStr;
         numB = saveNumB ? b.toString() : '';
         break;

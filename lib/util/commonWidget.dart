@@ -51,17 +51,18 @@ class WindowControlsBtn {
             );
       },
       onHover: (hover) {
-        Future.delayed(
-          const Duration(milliseconds: 1500),
-          () {
-            if (context.mounted) {
-              context.read<WindowControls>().btnHoverMenu(
-                    key: valueKey,
-                    context: context,
-                  );
-            }
-          },
-        );
+        //TODO: 현재 3초뒤 메뉴 띄우기 기능 잠시 중단 24.12.28
+        // Future.delayed(
+        //   const Duration(milliseconds: 1500),
+        //   () {
+        //     if (context.mounted) {
+        //       context.read<WindowControls>().btnHoverMenu(
+        //             key: valueKey,
+        //             context: context,
+        //           );
+        //     }
+        //   },
+        // );
       },
       child: Stack(
         key: valueKey,
@@ -112,12 +113,12 @@ class WindowControlsBtn {
             return InkWell(
               onTap: () {},
               onHover: (hover) {
-                //TODO: 현재 메뉴 띄우기 중단 24.12.28
-                // context.read<WindowControls>().btnHover(
-                //       context: context,
-                //       hover: hover,
-                //       model: model,
-                //     );
+                //TODO: hover 기능이 없는 터치기반 플랫폼은 디폴트 아이콘 보여주기
+                context.read<WindowControls>().btnHover(
+                      context: context,
+                      hover: hover,
+                      model: model,
+                    );
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
