@@ -9,12 +9,10 @@ class CalculatorViewProvider with ChangeNotifier {
   String numA = ''; // 숫자A
   String numB = ''; // 숫자B
   String operator = ''; // 연산자
-  bool beforeReturn = false; // return한 전적있는지
+  bool beforeReturn = false; // return한적이 있는지
 
   /// 초기화
   void initialization() {
-    print('계산기 초기화 내용');
-    print('$numA $numB');
     screenStr = '0';
     numA = '';
     numB = '';
@@ -35,12 +33,12 @@ class CalculatorViewProvider with ChangeNotifier {
       if (operator.isEmpty && !beforeReturn) {
         print('6.');
         numA += str; // A에 값 저장
-        screenStr = numA.replaceAll(MyRegExp.pointLeftDelZeros, '');
+        screenStr = numA.replaceAll(MyRegExp.pointLeftDelZero, '');
       } else if (operator.isNotEmpty) {
         print('7.');
 
         numB += str; // B에 값 저장
-        screenStr = numB.replaceAll(MyRegExp.pointLeftDelZeros, '');
+        screenStr = numB.replaceAll(MyRegExp.pointLeftDelZero, '');
       }
     } else {
       if (str.isReturn) {
@@ -126,23 +124,19 @@ class CalculatorViewProvider with ChangeNotifier {
 
   /// 화면,숫자,연산자 데이터 지우기
   void cleanBtn() {
-    print('계산기 초기화');
-    print('$numA $numB');
     initialization();
-    print('리셋');
-    print('$numA $numB');
     notifyListeners();
-
   }
 
   /// 계산 하기
   void calculation(String operator, double a, double b, [bool saveNumB = false]) {
     print('식: $a $operator $b ');
-    print(beforeReturn);
     beforeReturn = saveNumB;
     switch (operator) {
       case '+':
+        print('계산전 : ${a + b}');
         screenStr = (a + b).toString().replaceAll(MyRegExp.pointRightDelZero, '');
+        print(screenStr);
         numA = screenStr;
         numB = saveNumB ? b.toString() : '';
         break;

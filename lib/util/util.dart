@@ -110,16 +110,14 @@ class WindowControls with ChangeNotifier {
   bool hover = false;
 
   /// 초기화
- void initialization(BuildContext context)  {
+  void initialization(BuildContext context, String iconName) {
     key = const ValueKey(0);
     hover = false;
     // 계산기 내용 초기화
-    CalculatorViewProvider().cleanBtn();
-    // notifyListeners();
-    final provider = Provider.of<CalculatorViewProvider>(context, listen: false);
-
-    // 초기화 작업
-    provider.cleanBtn(); // cleanBtn 호출하여 초기화
+    if (iconName == '계산기') {
+      final provider = Provider.of<CalculatorViewProvider>(context, listen: false);
+      provider.cleanBtn(); // cleanBtn 호출하여 초기화
+    }
   }
 
   /// 랜덤 좌표값 리턴
@@ -189,7 +187,7 @@ class WindowControls with ChangeNotifier {
         overlayEntry = model.getEntries[iconName];
         overlayEntry!.remove();
         model.getEntries.remove(iconName);
-        initialization(context); // 초기화
+        initialization(context, iconName); // 초기화 (종료)
 
         break;
       case 'minimize':
