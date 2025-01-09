@@ -12,9 +12,6 @@ class MacWallPaperView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
-
     return Material(
       child: Container(
         decoration: const BoxDecoration(
@@ -39,6 +36,15 @@ class MacWallPaperView extends StatelessWidget {
                           context: context,
                           child: calculatorView(context),
                           iconName: '계산기',
+                          iconPath: 'assets/image/icon/calculator.png',
+                          maxWidth: 233,
+                          maxHeight: 323,
+                          backGround: Colors.blue,
+                        ),
+                        IconWidget().myApp(
+                          context: context,
+                          child: calculatorView(context),
+                          iconName: '계산기2',
                           iconPath: 'assets/image/icon/calculator.png',
                           maxWidth: 233,
                           maxHeight: 323,

@@ -13,12 +13,15 @@ class CalculatorViewProvider with ChangeNotifier {
 
   /// 초기화
   void initialization() {
+    print('계산기 초기화 내용');
+    print('$numA $numB');
     screenStr = '0';
     numA = '';
     numB = '';
     operator = '';
     beforeReturn = false;
     operatorKey = const ValueKey(0);
+    notifyListeners();
   }
 
   /// 숫자 입력
@@ -123,8 +126,13 @@ class CalculatorViewProvider with ChangeNotifier {
 
   /// 화면,숫자,연산자 데이터 지우기
   void cleanBtn() {
+    print('계산기 초기화');
+    print('$numA $numB');
     initialization();
+    print('리셋');
+    print('$numA $numB');
     notifyListeners();
+
   }
 
   /// 계산 하기

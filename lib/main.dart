@@ -68,7 +68,8 @@ class _RuntAppState extends State<RunApp> {
         ),
         ChangeNotifierProvider(
           create: (BuildContext context) => WindowControls(),
-        )
+        ),
+        // ChangeNotifierProvider(create: (BuildContext context)=> ),
       ],
       child: const MaterialApp(
         // initialRoute: '/',

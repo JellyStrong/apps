@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import '../model/deviceInfo.dart';
@@ -20,7 +21,7 @@ Future<Box<DeviceInfoData>> getDeviceInfo() async {
 
   print('???? ${box.get('model')}');
   print('????? ${box.values.toList()}');
-   box.get('model');
+  box.get('model');
   return box;
   // 데이터 저장
   // await box.put('device1', DeviceInfoData(model: ));
@@ -98,7 +99,7 @@ class WindowControlsBtn {
   /// window control 버튼 그리기 (빨,노,초) (공통)
   Widget buttons(OverlayEntry overlay, String iconName) {
     print('<>><<');
-    getDeviceInfo().then((result){
+    getDeviceInfo().then((result) {
       print('000000 ${result.get('model')}');
     });
     return Padding(
@@ -108,7 +109,6 @@ class WindowControlsBtn {
         width: 60,
         child: Consumer<WindowControls>(
           builder: (context, provider, child) {
-
             return InkWell(
               onTap: () {},
               onHover: (hover) {
@@ -123,14 +123,15 @@ class WindowControlsBtn {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   windowControlsBtn(
-                      context: context,
-                      valueKey: const ValueKey(100),
-                      provider:  provider,
-                      iconName: iconName,
-                      icon: Icons.close_rounded,
-                      color: Colors.red,
-                      str: 'close',
-                      overlay: overlay),
+                    context: context,
+                    valueKey: const ValueKey(100),
+                    provider: provider,
+                    iconName: iconName,
+                    icon: Icons.close_rounded,
+                    color: Colors.red,
+                    str: 'close',
+                    overlay: overlay,
+                  ),
                   windowControlsBtn(
                     context: context,
                     valueKey: const ValueKey(101),

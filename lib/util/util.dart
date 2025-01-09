@@ -3,6 +3,8 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:siiimple/provider/calculatorViewProvider.dart';
 import 'dart:math';
 import '../model/model.dart';
 
@@ -108,9 +110,16 @@ class WindowControls with ChangeNotifier {
   bool hover = false;
 
   /// 초기화
-  void initialization() {
+ void initialization(BuildContext context)  {
     key = const ValueKey(0);
     hover = false;
+    // 계산기 내용 초기화
+    CalculatorViewProvider().cleanBtn();
+    // notifyListeners();
+    final provider = Provider.of<CalculatorViewProvider>(context, listen: false);
+
+    // 초기화 작업
+    provider.cleanBtn(); // cleanBtn 호출하여 초기화
   }
 
   /// 랜덤 좌표값 리턴
@@ -180,7 +189,8 @@ class WindowControls with ChangeNotifier {
         overlayEntry = model.getEntries[iconName];
         overlayEntry!.remove();
         model.getEntries.remove(iconName);
-        initialization(); // 초기화
+        initialization(context); // 초기화
+
         break;
       case 'minimize':
         break;
@@ -218,10 +228,7 @@ class ImagesGetInfo {
   }
 }
 
-class Init {}
-
 class StateManage with ChangeNotifier {
-
   disposeCache(Box cache) {
     cache.close();
 
