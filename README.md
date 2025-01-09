@@ -15,14 +15,24 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
+## 장인영 - 2025.01.08
 ## 구현 필요 및 에러 사항 ##
+
 # 앱
-- 디바이스 정보 불러와 접속 플랫폼에 따른 WCB(WindowControllerButton) 보여주기
-- hive 이용하기
-- WCB를 누르고 마우스(탭) 이동 하여 위치 조정 
+- hover 기능이 없는 터치기반 플랫폼은 디폴트 아이콘 보여 주기
+- hive 이용하여 접속 플랫폼 정보 조회 하고 저장
+- 윈도우컨트롤버튼 영역을 누른 후 이동 하여 위치 조정 가능케
+- 윈도우컨트롤버튼 '최소화','최대화' 개발 필요
+- 색상 테마 또는 사진(시간변화에 따른 이미지 변환) 적용
+
 
 # 계산기
 - 계산 우선 순위 적용 안됌 (괄호 > 덧셈,나눗셈 > 더하기,빼기)
 - 부동 소수점 정밀도 오류 / 근시 값으로 보여 주기 때문에 계산에 오차 발생함
-- Clean, AllClean
+- Clean, AllClean 추가 기능 분리
+
+
+# 사진 (개발 예정)
+- 접속 플랫폼의 화면 사이즈와 사진 사이즈를 비교하여 최적의 크기로 사진 띄어 주기
+
 
