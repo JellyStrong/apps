@@ -11,11 +11,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(DeviceInfoDataAdapter()); // 어댑터 등록
-  Box<DeviceInfoData> box = await Hive.openBox<DeviceInfoData>('deviceInfoBox');
-  runApp(RunApp(box: box));
+  /// Box<DeviceInfoData> box = await Hive.openBox<DeviceInfoData>('deviceInfoBox');
+  runApp(RunApp());
+  /// runApp(RunApp(box: box));
 }
 
 /// 디바이스 정보 Box 어댑터에 저장
+///
+///void saveDeviceInfoData(BuildContext context, Box<DeviceInfoData> box) async {
 void saveDeviceInfoData(BuildContext context, Box<DeviceInfoData> box) async {
   DeviceInfo().getDeviceInfo(context).then((result) async {
     // var box = await Hive.openBox<DeviceInfoData>('deviceInfoBox');
@@ -31,9 +34,10 @@ Future<void> getAllDeviceInfo() async {
 }
 
 class RunApp extends StatefulWidget {
-  RunApp({super.key, required this.box});
+  /// RunApp({super.key, required this.box});
+  RunApp({super.key});
 
-  Box<DeviceInfoData> box;
+  // Box<DeviceInfoData> box;
 
   @override
   State<RunApp> createState() => _RuntAppState();
@@ -45,14 +49,16 @@ class _RuntAppState extends State<RunApp> {
     // TODO: implement initState
     super.initState();
 
-    saveDeviceInfoData(context, widget.box);
+    // saveDeviceInfoData(context, widget.box);
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    widget.box.clear();
+    // widget.box.clear();
     super.dispose();
+
+
   }
 
   @override

@@ -12,12 +12,24 @@ const int closeKey = 100;
 const int minimizeKey = 101;
 const int maximizeKey = 102;
 
-/* DEVICE INFO
+/* DeviceInfo
  * getHeight()
  * getWidth()
  * getSize()
+ * getDeviceInfo()
+ * */
+
+/* WindowControls
+ * initialization()
+ * getLayoutRandomOffset()
+ * getMenuOffset()
+ * btnHoverMenu()
+ * btnHover()
+ * btnClick()
  *
  * */
+
+
 Model model = Model();
 
 class DeviceInfo {
@@ -92,15 +104,7 @@ class DeviceInfo {
   }
 }
 
-/* WINDOW CONTROL (WC)
- * initialization()
- * getLayoutRandomOffset()
- * getMenuOffset()
- * btnHoverMenu
- * btnHover
- * btnClick
- *
- * */
+
 class WindowControls with ChangeNotifier {
   // 1. 윈더우 컨트롤 마우스 호버시 메뉴 아이콘 노출
   // 2. 윈도우 컨트롤 마우스 1.5초 호버시 메뉴 노툴

@@ -7,9 +7,15 @@ import '../model/model.dart';
 import '../util/util.dart';
 import 'util.dart';
 
-/* WINDOW CONTROL BUTTON (WCB)
+/* WindowControlsBtn
  * windowControlsBtn()
  * buttons()
+ *
+ * */
+
+/* IconWidget
+ * myImage()
+ * myApp()
  *
  * */
 Model model = Model();
@@ -163,11 +169,7 @@ class WindowControlsBtn {
   }
 }
 
-/* ICON WIDGET
- * myImage
- * myApp
- *
- * */
+
 class IconWidget {
   Widget myImage({
     required BuildContext context,
@@ -222,6 +224,7 @@ class IconWidget {
     return sizeSHow;
   }
 
+  /// 이미지일 경우 해당
   Widget myPicture({
     required BuildContext context,
     required Widget child,
@@ -324,6 +327,7 @@ class IconWidget {
     );
   }
 
+  /// 일반적인 앱일 경우 해당
   Widget myApp({
     required BuildContext context,
     required Widget child,
